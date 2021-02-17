@@ -1,0 +1,178 @@
+<html>
+	<head>
+		<script data-ui5-config type="application/json">
+		{
+			"language": "en",
+			"theme": "sap_fiori_3"
+		}
+		</script>
+	</head>
+  <body>
+	<div class="grid-container">
+		<div class="shell">
+			<ui5-shellbar id="shellbar" primary-title="Corporate Portal" secondary-title="Personal Area" notification-count="3" show-notifications show-product-switch show-co-pilot>
+				<ui5-avatar-group type="Group" avatar-size="XS" slot="profile">
+					<ui5-avatar id="headerImage"></ui5-avatar>
+					<ui5-avatar id="headerInitials"></ui5-avatar>
+				</ui5-avatar-group>
+				<img slot="logo" id="logo"/>
+				<ui5-button icon="nav-back" slot="startButton"></ui5-button>
+		
+				<ui5-shellbar-item id="disc" icon="disconnected" text="Disconnect"></ui5-shellbar-item> <!-- use default slot -->
+				<ui5-shellbar-item id="calendar" icon="appointment" text="Calendar" count="1"></ui5-shellbar-item>
+				<ui5-shellbar-item id="call" icon="incoming-call" text="Incoming Calls" count="4"></ui5-shellbar-item>
+			</ui5-shellbar>
+			<ui5-popover id="popover" placement-type="Bottom">
+				<div class="popover-header">
+					<ui5-title id="headerTitle" style="padding: 0.25rem 1rem 0rem 1rem"></ui5-title>
+				</div>
+
+				<div class="popover-content">
+					<ui5-list id="personalMenu" separators="None" >
+						<ui5-li icon="sys-find">App Finder</ui5-li>
+						<ui5-li id="settings" icon="settings">Settings</ui5-li>
+						<ui5-li icon="edit">Edit Home Page</ui5-li>
+						<ui5-li icon="sys-help">Help</ui5-li>
+						<ui5-li icon="log">Sign out</ui5-li>
+					</ui5-list>
+				</div>
+			</ui5-popover>
+			<ui5-popover id="calendarPopover" placement-type="Bottom">
+				<div class="popover-header">
+					<ui5-title style="padding: 0.25rem 1rem 0rem 1rem">My Calendar</ui5-title>
+				</div>
+
+				<div class="popover-content">
+					<ui5-calendar selection="Multiple" style="height:40%; width:20%;"></ui5-calendar>
+				</div>
+			</ui5-popover>
+			<ui5-messagestrip type="Warning" style="height:30px;">You have some open tasks</ui5-messagestrip>
+			<ui5-dialog id="settingsDialog" header-text="Settings">
+				<ui5-tabcontainer>
+					<ui5-tab icon="employee" selected>
+						<ui5-progress-indicator value-state="Success" value="90"></ui5-progress-indicator>
+						<section>
+							<div class="center">
+								<div>
+									<ui5-label for="TitleOfCourtesy">Title: </ui5-label><br/>
+									<ui5-select id="TitleOfCourtesy">
+										<ui5-option selected>Dr.</ui5-option>
+									</ui5-select><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="FirstName">First Name: </ui5-label><br/>
+									<ui5-input id="FirstName" readonly></ui5-input><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="LastName">Last Name: </ui5-label><br/>
+									<ui5-input id="LastName" readonly></ui5-input><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="HomePhone">Phone: </ui5-label><br/>
+									<ui5-link id="HomePhone"></ui5-link><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="BirthDate" required>Birth Date: </ui5-label><br/>
+									<ui5-date-picker id="BirthDate"></ui5-date-picker><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="Notes">Notes: </ui5-label><br/>
+									<ui5-textarea id="Notes" placeholder="Your notes..." maxlength="1000" show-exceeded-text></ui5-textarea><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="Rating">Rating by Supervisor: </ui5-label><br/>
+									<ui5-rating-indicator id="Rating" value="4" disabled></ui5-rating-indicator>
+								</div>
+							</div>
+						</section>
+					</ui5-tab>
+					<ui5-tab icon="menu">
+						<section>
+							<div class="center">
+								<div>
+									<ui5-label for="password" required>Password: </ui5-label><br/>
+									<ui5-input id="password" type="Password" value-state="Error"></ui5-input><br/><br/>
+								</div>
+								<div>
+									<ui5-label for="theme" required>Dark Theme: </ui5-label><br/>
+									<ui5-switch id="theme" text-on="Yes" text-off="No" onchange="window.changeTheme(this)"></ui5-switch><br/><br/>
+								</div>
+								<ui5-segmentedbutton id="language">
+								    <ui5-togglebutton id="en" pressed>English</ui5-togglebutton>
+								    <ui5-togglebutton id="de">German</ui5-togglebutton>
+								</ui5-segmentedbutton><br/><br/>
+								<div>
+									<ui5-upload-collection id="uploadCollectionDnD">
+										<div class="header" slot="header">
+											<ui5-label>Attachments</ui5-label>
+										</div>
+									</ui5-upload-collection>
+								</div>
+							</div>
+						</section>
+					</ui5-tab>
+				</ui5-tabcontainer>
+				<div slot="footer" class="center">
+					<div style="flex: 1;"></div>
+					<ui5-button id="settingsOK" design="Emphasized">OK</ui5-button>
+				</div>
+			</ui5-dialog>
+			<ui5-toast id="settingsToast">Settings saved</ui5-toast>
+		</div>
+		<br/>
+
+		<ui5-list id="notifications" class="notifications" header-text="Notifications">
+		</ui5-list>
+		<ui5-side-navigation class = "menu">
+			<ui5-side-navigation-item text="Home" icon="home" selected></ui5-side-navigation-item>
+			<ui5-side-navigation-item text="Events" icon="calendar" expanded>
+				<ui5-side-navigation-sub-item text="Local"></ui5-side-navigation-sub-item>
+				<ui5-side-navigation-sub-item text="Others"></ui5-side-navigation-sub-item>
+			</ui5-side-navigation-item>
+			<ui5-side-navigation-item slot="fixedItems" text="Useful Links" icon="chain-link"></ui5-side-navigation-item>
+			<ui5-side-navigation-item slot="fixedItems" text="History" icon="history"></ui5-side-navigation-item>
+		</ui5-side-navigation>
+		<ui5-busyindicator class = "main" id="busy-container" size="Medium">
+        		<ui5-table id="ordersTable" no-data-text="No Data" show-no-data>
+            			<ui5-table-column id="OrderID" slot="columns" min-width="600" popin-text="ID">
+                			<span style="line-height: 1.4rem">Order ID</span>
+            			</ui5-table-column>
+
+            			<ui5-table-column id="Customer.CompanyName" slot="columns" min-width="600" popin-text="Customer" demand-popin>
+                			<span style="line-height: 1.4rem">Customer Name</span>
+            			</ui5-table-column>
+
+            			<ui5-table-column id="OrderDate" slot="columns" style="width: 6rem">
+                			<span style="line-height: 1.4rem">Order Date</span>
+            			</ui5-table-column>
+
+            			<ui5-table-column id = "Total.Subtotal" slot="columns" style="width: 6rem">
+                			<span style="line-height: 1.4rem">Total (EUR)</span>
+            			</ui5-table-column>
+        		</ui5-table> 
+		</ui5-busyindicator>
+		<div class="teamspace">
+			<ui5-carousel>
+    			<div class="card-content">
+					<ui5-card heading="My Team Space" subheading="Direct Reports" class="medium">
+						<ui5-icon name="group" slot="avatar"></ui5-icon>
+						<div>
+							<ui5-list id="reportsList" separators="None" class="card-content-child" style="width: 100%">
+							</ui5-list>
+						</div>
+					</ui5-card>
+				</div>
+				<div class="card-content">
+					<ui5-card heading="My Team Space" subheading="Direct Reports" class="medium">
+						<ui5-icon name="group" slot="avatar"></ui5-icon>
+						<div>
+							<ui5-list id="reportsList" separators="None" class="card-content-child" style="width: 100%">
+							</ui5-list>
+						</div>
+					</ui5-card>
+				</div>
+			</ui5-carousel>
+		</div>
+	</div>
+  </body>
+</html>
